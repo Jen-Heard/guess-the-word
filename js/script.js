@@ -8,9 +8,10 @@ const guessMessage = document.querySelector( ".message");
 const playAgainButton = document.querySelector(".play-again");
 
 let word = "magnolia";
-const guessedLetters = [];
+let guessedLetters = [];
 let remainingGuesses = 8;
 
+// Code to grab the API and produce a random word
 const getWord = async function () {
     const response = await fetch("https://gist.githubusercontent.com/skillcrush-curriculum/7061f1d4d3d5bfe47efbfbcfe42bf57e/raw/5ffc447694486e7dea686f34a6c085ae371b43fe/words.txt");
         const words = await response.text();
@@ -28,10 +29,11 @@ const placeholder = function (word) {
     for (const letter of word) {
         console.log(letter);
         placeholderLetters.push("●");
-    };
+    }
     inProgress.innerText = placeholderLetters.join("");
 };
 
+// Code for the click event
 guessButton.addEventListener("click", function (e) {
     e.preventDefault();
     guessMessage.innerText = "";
@@ -46,6 +48,7 @@ guessButton.addEventListener("click", function (e) {
     guessInput.value = "";
 });
 
+
 const validateInput = function (input) {
     const acceptedLetter = /[a-zA-Z]/;
     if (input.length === 0) {
@@ -56,7 +59,7 @@ const validateInput = function (input) {
         guessMessage.innerText = `Please enter a letter from A to Z`;
     } else {
         return input;
-    };
+    }
 };
 
 const makeGuess = function (guess) {
@@ -112,6 +115,7 @@ const updateGuessesRemaining = function (guess) {
 
     if (remainingGuesses === 0) {
         guessMessage.innerHTML = `Game over! The word was <span class="highlight">${word}</span>.`;
+        startOver();
     } else if (remainingGuesses === 1) {
         remainingGuessesSpan.innerText = `${remainingGuesses} guess`;
     } else {
@@ -124,6 +128,34 @@ const checkIfWin = function () {
     if (word.toUpperCase() === inProgress.innerText) {
         guessMessage.classList.add("win");
         guessMessage.innerHTML = `<p class="highlight">You guessed the correct word; congrats!!</p>`;    
+
+        startOver();
     }
 };
+
+// Code to start game again
+const startOver = function () {
+    guessButton.classList.add("hide");
+    remainingGuessesP.classList.add("hide");
+    guessedLettersElement.classList.add("hide");
+    playAgainButton.classList.remove("hide");
+};
+
+
+playAgainButton.addEventListener("click", function () {
+    guessMessage.classList.remove("win");
+    guessedLetters = [];
+    remainingGuesses = 8;
+    remainingGuessesSpan.innerText = `${remainingGuesses} guesses`;
+    guessedLettersElement.innerHTML = "";
+    guessMessage.innerText = "";
+
+    getWord();
+
+    guessButton.classList.remove("hide");
+    playAgainButton.classList.add("hide");
+    remainingGuessesP.classList.remove("hide");
+    guessedLettersElement.classList.remove("hide"); 
+});
+
 
