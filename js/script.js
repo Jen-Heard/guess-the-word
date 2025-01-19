@@ -11,7 +11,6 @@ let word = "magnolia";
 let guessedLetters = [];
 let remainingGuesses = 8;
 
-// Code to grab the API and produce a random word
 const getWord = async function () {
     const response = await fetch("https://gist.githubusercontent.com/skillcrush-curriculum/7061f1d4d3d5bfe47efbfbcfe42bf57e/raw/5ffc447694486e7dea686f34a6c085ae371b43fe/words.txt");
         const words = await response.text();
@@ -23,23 +22,20 @@ const getWord = async function () {
 
     getWord();
 
-// Display symbols as placeholders for letters
 const placeholder = function (word) {
     const placeholderLetters = [];
     for (const letter of word) {
         console.log(letter);
-        placeholderLetters.push("●");
+        placeholderLetters.push("🍋‍🟩");
     }
     inProgress.innerText = placeholderLetters.join("");
 };
 
-// Code for the click event
 guessButton.addEventListener("click", function (e) {
     e.preventDefault();
     guessMessage.innerText = "";
 
     const guess = guessInput.value;
-    // console.log(inputLetter);
     const goodGuess = validateInput(guess);
 
     if (goodGuess) {
@@ -86,24 +82,21 @@ const showGuessedLetters = function () {
     }
 };
 
-// Code to update the word in progress
 const wordUpdate = function (guessedLetters) {
     const wordUpper = word.toUpperCase();
     const wordArray = wordUpper.split("");
-    // console.log(wordArray);
     const revealWord = [];
     for (const letter of wordArray) {
         if (guessedLetters.includes(letter)) {
             revealWord.push(letter.toUpperCase());
         } else {
-            revealWord.push("●");
+            revealWord.push("🍋‍🟩");
         }
     }
     inProgress.innerText = revealWord.join("");
     checkIfWin();
 };
 
-// Code for remaining guesses
 const updateGuessesRemaining = function (guess) {
     const upperWord = word.toUpperCase();
     if (!upperWord.includes(guess)){
@@ -123,7 +116,6 @@ const updateGuessesRemaining = function (guess) {
     }
 };
 
-// Code to check if player won
 const checkIfWin = function () {
     if (word.toUpperCase() === inProgress.innerText) {
         guessMessage.classList.add("win");
@@ -133,7 +125,6 @@ const checkIfWin = function () {
     }
 };
 
-// Code to start game again
 const startOver = function () {
     guessButton.classList.add("hide");
     remainingGuessesP.classList.add("hide");
@@ -157,5 +148,3 @@ playAgainButton.addEventListener("click", function () {
     remainingGuessesP.classList.remove("hide");
     guessedLettersElement.classList.remove("hide"); 
 });
-
-
